@@ -1,10 +1,11 @@
 import React from 'react'
-import { Table, Typography } from 'antd'
+import { Col, Row, Table, Typography } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { RequestData } from 'lib'
 import Action from './Action'
 import moment from 'moment'
 import AddressTag from 'components/addressTag'
+import StatusTag from 'components/tag'
 
 const columns: ColumnsType<RequestData & { requestAddress: string }> = [
   {
@@ -52,7 +53,18 @@ const columns: ColumnsType<RequestData & { requestAddress: string }> = [
   {
     title: 'Action',
     key: 'action',
-    render: (_, record) => <Action requestAddress={record.requestAddress} />,
+    render: (_, record) => {
+      if ((record.state as any).initialized) {
+        return <Action requestAddress={record.requestAddress} />
+      }
+      return (
+        <Row justify="center">
+          <Col>
+            <StatusTag status={Object.keys(record.state as any)[0] as any} />
+          </Col>
+        </Row>
+      )
+    },
   },
 ]
 

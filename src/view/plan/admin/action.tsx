@@ -10,11 +10,16 @@ import {
   Input,
   Space,
 } from 'antd'
+import { notifyError, notifySuccess } from 'helper'
+import { usePlan } from 'hooks/usePlan'
 import { theShareProgram } from 'lib'
 import React, { useCallback, useState } from 'react'
 
 type ActionProps = {
   planAddress: string
+  oldAmount: number
+  oldReason: string
+  oldWithdrawerList: string[]
 }
 
 type ModalContentProps = {
@@ -23,19 +28,36 @@ type ModalContentProps = {
     planName: string,
     withdrawerList: string[],
   ) => void
+  oldAmount: number
+  oldReason: string
+  oldWithdrawerList: string[]
 }
 
-function Action({ planAddress }: ActionProps) {
+function Action({
+  planAddress,
+  oldAmount,
+  oldReason,
+  oldWithdrawerList,
+}: ActionProps) {
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const onEditPlan = useCallback(
-    (amount: number, planName: string, withdrawerList: string[]) => {
-      theShareProgram.changePlanConfigs({
-        fund: new BN(amount),
-        planName,
-        withdrawerList,
-        planAddress,
-      })
+    async (amount: number, planName: string, withdrawerList: string[]) => {
+      try {
+        const { txId } = await theShareProgram.changePlanConfigs({
+          fund: new BN(amount),
+          planName,
+          withdrawerList,
+          planAddress,
+        })
+        notifySuccess('Edit Plan', txId)
+      } catch (err) {
+        notifyError(err)
+      } finally {
+        setLoading(false)
+        setOpen(false)
+      }
     },
     [planAddress],
   )
@@ -53,16 +75,28 @@ function Action({ planAddress }: ActionProps) {
         destroyOnClose
         footer={null}
       >
-        <ModalContent onEditPlan={onEditPlan} />
+        <ModalContent
+          onEditPlan={onEditPlan}
+          oldAmount={oldAmount}
+          oldReason={oldReason}
+          oldWithdrawerList={oldWithdrawerList}
+        />
       </Modal>
     </Row>
   )
 }
 
-const ModalContent = ({ onEditPlan }: ModalContentProps) => {
-  const [amount, setAmount] = useState(0)
-  const [reason, setReason] = useState('')
-  const [withdrawerList, setWithdrawerList] = useState<string[]>([])
+const ModalContent = ({
+  onEditPlan,
+  oldAmount,
+  oldReason,
+  oldWithdrawerList,
+}: ModalContentProps) => {
+  const [amount, setAmount] = useState(oldAmount)
+  const [reason, setReason] = useState(oldReason)
+  const [withdrawerList, setWithdrawerList] = useState<string[]>(
+    oldWithdrawerList || [],
+  )
 
   return (
     <Row gutter={[16, 16]}>
@@ -71,18 +105,19 @@ const ModalContent = ({ onEditPlan }: ModalContentProps) => {
       </Col>
       <Col span={24}>
         <Typography.Title level={5}>Amount</Typography.Title>
-        <Space style={{ width: '100%' }}>
-          <InputNumber value={amount} onChange={(value) => setAmount(value)} />
-        </Space>
+
+        <InputNumber
+          style={{ width: '100%' }}
+          value={amount}
+          onChange={(value) => setAmount(value)}
+        />
       </Col>
       <Col span={24}>
-        <Typography.Title level={5}>Reason</Typography.Title>
-        <Space style={{ width: '100%' }}>
-          <Input.TextArea
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-        </Space>
+        <Typography.Title level={5}>Plan Name</Typography.Title>
+        <Input.TextArea
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        />
       </Col>
       <Col span={24}>
         <Row gutter={[6, 6]}>
@@ -122,7 +157,7 @@ const ModalContent = ({ onEditPlan }: ModalContentProps) => {
                         </Col>
                       </Row>
                     </Col>
-                    <Col span={12}>
+                    <Col span={24}>
                       <Input
                         placeholder="type"
                         value={attribute}

@@ -12,10 +12,12 @@ export const useWaitRequest = () => {
   const plans = useYourPlan()
 
   const handle = useCallback(() => {
-    const yourPlanAddress = Object.keys(plans)
+    const yourPlanAddress = Object.values(plans).map((plan) => plan.planAddress)
+
     const data = Object.keys(requests)
       .filter((keyRequest) => {
         const { plan } = requests[keyRequest]
+        console.log('thong tin request', plan.toBase58())
         return yourPlanAddress.includes(plan.toBase58())
       })
       .map((val) => ({ ...requests[val], requestAddress: val }))

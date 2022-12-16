@@ -31,6 +31,7 @@ function Action({ requestAddress }: ActionProps) {
       await theShareProgram.acceptRequest({ requestAddress })
       window.notify({ type: 'success', description: 'Accept successfully' })
     } catch (err) {
+      console.log('thong tin error=>', err)
       window.notify({ type: 'error', description: 'Accept failed' })
     } finally {
       setLoadingAccept(false)
@@ -44,6 +45,7 @@ function Action({ requestAddress }: ActionProps) {
       await theShareProgram.rejectRequest({ requestAddress })
       window.notify({ type: 'success', description: 'Reject successfully' })
     } catch (err) {
+      console.log('thong tin error=>', err)
       window.notify({ type: 'error', description: 'Reject failed' })
     } finally {
       setLoadingReject(false)

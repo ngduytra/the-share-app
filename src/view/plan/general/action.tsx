@@ -9,6 +9,7 @@ import {
   Input,
   Space,
 } from 'antd'
+import { notifyError, notifySuccess } from 'helper'
 import { theShareProgram } from 'lib'
 import React, { useCallback, useState } from 'react'
 
@@ -18,18 +19,29 @@ type ActionProps = {
 
 type ModalContentProps = {
   onCreateRequest: (amount: number, reason: string) => void
+  loading: boolean
 }
 
 function Action({ planAddress }: ActionProps) {
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const onCreateRequest = useCallback(
-    (amount: number, reason: string) => {
-      theShareProgram.createRequest({
-        amount: new BN(amount),
-        reason,
-        planAddress,
-      })
+    async (amount: number, reason: string) => {
+      setLoading(true)
+      try {
+        const { txId } = await theShareProgram.createRequest({
+          amount: new BN(amount),
+          reason,
+          planAddress,
+        })
+        notifySuccess('Create Request', txId)
+      } catch (err) {
+        notifyError(err)
+      } finally {
+        setLoading(false)
+        setOpen(false)
+      }
     },
     [planAddress],
   )
@@ -47,13 +59,13 @@ function Action({ planAddress }: ActionProps) {
         destroyOnClose
         footer={null}
       >
-        <ModalContent onCreateRequest={onCreateRequest} />
+        <ModalContent onCreateRequest={onCreateRequest} loading={loading} />
       </Modal>
     </Row>
   )
 }
 
-const ModalContent = ({ onCreateRequest }: ModalContentProps) => {
+const ModalContent = ({ onCreateRequest, loading }: ModalContentProps) => {
   const [amount, setAmount] = useState(0)
   const [reason, setReason] = useState('')
 
@@ -64,23 +76,28 @@ const ModalContent = ({ onCreateRequest }: ModalContentProps) => {
       </Col>
       <Col span={24}>
         <Typography.Title level={5}>Amount</Typography.Title>
-        <Space style={{ width: '100%' }}>
-          <InputNumber value={amount} onChange={(value) => setAmount(value)} />
-        </Space>
+
+        <InputNumber
+          style={{ width: '100%' }}
+          value={amount}
+          onChange={(value) => setAmount(value)}
+        />
       </Col>
       <Col span={24}>
         <Typography.Title level={5}>Reason</Typography.Title>
-        <Space style={{ width: '100%' }}>
-          <Input.TextArea
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-        </Space>
+
+        <Input.TextArea
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        />
       </Col>
 
       <Col span={24}>
         <Space style={{ width: '100%' }} direction="vertical" align="end">
-          <Button onClick={() => onCreateRequest(amount, reason)}>
+          <Button
+            onClick={() => onCreateRequest(amount, reason)}
+            loading={loading}
+          >
             Submit
           </Button>
         </Space>

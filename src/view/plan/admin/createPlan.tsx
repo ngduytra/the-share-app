@@ -48,7 +48,7 @@ function CreatePlan() {
     } catch (err) {
       notifyError(err)
     } finally {
-      setLoading(true)
+      setLoading(false)
       setOpen(false)
     }
   }
@@ -92,7 +92,7 @@ const ModalContent = ({ onCreatePlan, loading }: ModalContentProps) => {
         />
       </Col>
       <Col span={24}>
-        <Typography.Title level={5}>Reason</Typography.Title>
+        <Typography.Title level={5}>Plan Name</Typography.Title>
         <Input.TextArea
           value={reason}
           onChange={(e) => setReason(e.target.value)}
@@ -136,7 +136,7 @@ const ModalContent = ({ onCreatePlan, loading }: ModalContentProps) => {
                         </Col>
                       </Row>
                     </Col>
-                    <Col span={12}>
+                    <Col span={24}>
                       <Input
                         placeholder="type"
                         value={attribute}
@@ -167,10 +167,15 @@ const ModalContent = ({ onCreatePlan, loading }: ModalContentProps) => {
         </Row>
       </Col>
       <Col span={24}>
-        <Space style={{ width: '100%' }}>
-          <Typography.Title level={5}>Token</Typography.Title>
-          <BalanceToken mint={token} />
-        </Space>
+        <Row>
+          <Col flex={1}>
+            <Typography.Title level={5}>Token</Typography.Title>
+          </Col>
+          <Col>
+            {' '}
+            <BalanceToken mint={token} />
+          </Col>
+        </Row>
 
         <MintSelection
           style={{

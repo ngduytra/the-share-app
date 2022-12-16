@@ -1,7 +1,6 @@
-import { Col, Row, Image, Space } from 'antd'
+import { Col, Row, Image, Space, Typography } from 'antd'
 
 import Logo from '../../static/images/theshare.png'
-import Solana from '../../static/images/solana.svg'
 
 const Header = () => {
   return (
@@ -15,13 +14,15 @@ const Header = () => {
       <Col style={{ alignItems: 'center', display: 'flex' }}>
         <Space
           style={{
-            background: '#944095',
             padding: 6,
             borderRadius: 12,
             width: '100%',
           }}
+          wrap={false}
         >
-          <Image src={Solana} preview={false} width={203} />
+          <Typography.Text>
+            Powered by <strong>Solana</strong>
+          </Typography.Text>
         </Space>
       </Col>
     </Row>

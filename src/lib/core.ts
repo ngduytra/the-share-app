@@ -403,18 +403,11 @@ class TheShareAmm {
   ) => {
     if (!isAddress(requestAddress)) throw new Error('Invalid request address')
     const { plan } = await this.getRequestData(requestAddress)
-    const { withdrawerList } = await this.getPlanData(plan.toBase58())
-
-    const withdrawerIndex = withdrawerList.findIndex((wt) =>
-      wt.equals(this._provider.wallet.publicKey),
-    )
-
-    if (withdrawerIndex === -1) throw Error('You have no permission')
 
     const requestPublicKey = new web3.PublicKey(requestAddress)
 
     const builder = this.program.methods.rejectRequest().accounts({
-      withdrawer: this._provider.wallet.publicKey,
+      planer: this._provider.wallet.publicKey,
       plan,
       request: requestPublicKey,
 
@@ -441,16 +434,8 @@ class TheShareAmm {
     const { plan, withdrawer, amount } = await this.getRequestData(
       requestAddress,
     )
-    const { withdrawerList, token, fund } = await this.getPlanData(
-      plan.toBase58(),
-    )
+    const { token, fund } = await this.getPlanData(plan.toBase58())
     if (fund.lt(amount)) throw Error('You have no longer fund enough')
-
-    const withdrawerIndex = withdrawerList.findIndex((wt) =>
-      wt.equals(this._provider.wallet.publicKey),
-    )
-
-    if (withdrawerIndex === -1) throw Error('You have no permission')
 
     const requestPublicKey = new web3.PublicKey(requestAddress)
 

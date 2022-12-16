@@ -40,11 +40,12 @@ function Action({ requestAddress }: ActionProps) {
           reason,
           requestAddress,
         })
-        window.notify({ type: 'success', description: 'Accept successfully' })
+        window.notify({ type: 'success', description: 'Edit successfully' })
       } catch (err) {
-        window.notify({ type: 'error', description: 'Accept failed' })
+        window.notify({ type: 'error', description: 'Edit failed' })
       } finally {
         setLoadingAccept(false)
+        setOpenAccept(false)
       }
     },
     [requestAddress],
@@ -55,11 +56,12 @@ function Action({ requestAddress }: ActionProps) {
     setLoadingReject(true)
     try {
       await theShareProgram.cancelRequest({ requestAddress })
-      window.notify({ type: 'success', description: 'Reject successfully' })
+      window.notify({ type: 'success', description: 'Cancel successfully' })
     } catch (err) {
-      window.notify({ type: 'error', description: 'Reject failed' })
+      window.notify({ type: 'error', description: 'Cancel failed' })
     } finally {
       setLoadingReject(false)
+      setOpenReject(false)
     }
   }, [requestAddress])
 
@@ -137,22 +139,24 @@ const ModalContent = ({
   return (
     <Row gutter={[16, 16]}>
       <Col span={24}>
-        <Typography.Title level={3}>Create Request</Typography.Title>
+        <Typography.Title level={3}>Edit Request</Typography.Title>
       </Col>
       <Col span={24}>
         <Typography.Title level={5}>Amount</Typography.Title>
-        <Space style={{ width: '100%' }}>
-          <InputNumber value={amount} onChange={(value) => setAmount(value)} />
-        </Space>
+
+        <InputNumber
+          style={{ width: '100%' }}
+          value={amount}
+          onChange={(value) => setAmount(value)}
+        />
       </Col>
       <Col span={24}>
         <Typography.Title level={5}>Reason</Typography.Title>
-        <Space style={{ width: '100%' }}>
-          <Input.TextArea
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-        </Space>
+
+        <Input.TextArea
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        />
       </Col>
 
       <Col span={24}>

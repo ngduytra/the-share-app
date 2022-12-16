@@ -1,11 +1,10 @@
 import React from 'react'
-import { Row, Table, Typography, Col } from 'antd'
+import { Row, Table, Typography, Col, Space } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { PlanData } from 'lib'
 import AddressTag from 'components/addressTag'
-import {} from '@sentre/senhub'
-import { shortenAddress } from 'utils'
 import Action from './action'
+import { MintAvatar, MintSymbol } from '@sen-use/app'
 
 const columns: ColumnsType<PlanData & { planAddress: string }> = [
   {
@@ -39,13 +38,23 @@ const columns: ColumnsType<PlanData & { planAddress: string }> = [
     key: 'token',
     dataIndex: 'token',
     render: (token) => (
-      <Typography.Text>{shortenAddress(token.toBase58())}</Typography.Text>
+      <Space size={4}>
+        <MintAvatar mintAddress={token.toBase58()} />
+        <MintSymbol mintAddress={token.toBase58()} />
+      </Space>
     ),
   },
   {
     title: 'Action',
-    key: 'action',
-    render: (_, record) => <Action planAddress={record.planAddress} />,
+    key: 'token',
+    render: (_, record) => (
+      <Action
+        planAddress={record.planAddress}
+        oldAmount={record.fund.toNumber()}
+        oldReason={record.planName}
+        oldWithdrawerList={record.withdrawerList.map((val) => val.toBase58())}
+      />
+    ),
   },
 ]
 

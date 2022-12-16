@@ -1,4 +1,4 @@
-import panel from 'static/images/panel.png'
+import panel from 'static/images/theshare.png'
 
 export const panels = [panel]
 export { default as logo } from 'static/images/logo.png'
