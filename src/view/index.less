@@ -1,0 +1,116 @@
+.sentre-btn  {
+  border-radius: 90 !important;
+  border-radius: 90px;
+  &.sentre-btn-primary{
+
+    background: #9757D7;
+    border: none;
+    color: #FCFCFD !important;
+
+    &.has-disable {
+      background: #D9D9D9;
+    }
+  }
+
+  &.sentre-btn-dangerous {
+    color: red !important;
+    
+  }
+  
+}
+
+.sentre-segmented {
+  &.sentre-segmented-block {
+    background: none; 
+  }
+  >.sentre-segmented-group {
+    height: 40px;
+    .sentre-segmented-item {
+      width: 161px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      &.sentre-segmented-item-selected {
+        background: #9757D7;
+        >.sentre-segmented-item-label {
+          color: #FCFCFD;
+        }
+      }
+      >.sentre-segmented-item-label {
+        color:  #172B4D;
+       
+      }
+    }
+  }
+}
+
+.table-custom {
+  .sentre-table {
+    margin-bottom: 12px;
+  }
+
+  thead {
+    &:has(th),
+    th {
+      color: #777E91;
+    }
+  }
+  tbody {
+    tr {
+      background: transparent;
+      &:not(:last-child) {
+        td {
+          border-bottom: 1px solid #1b2526;
+        }
+      }
+      td {
+        max-width: 120px;
+        border-top: 1px solid transparent;
+        &:first-child {
+          border-left: 1px solid transparent;
+        }
+        &:last-child {
+          border-right: 1px solid transparent;
+        }
+      }
+      &:hover {
+        td {
+          border-top-color: #42bab0;
+          border-bottom-color: #42bab0;
+          &:first-child {
+            border-left-color: #42bab0;
+          }
+          &:last-child {
+            border-right-color: #42bab0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sentre-pagination-prev {
+  .sentre-pagination-item-link {
+    border-radius: 90px !important;
+  }
+  
+}
+.sentre-pagination-item {
+  border-radius: 90px !important;
+  &.sentre-pagination-item-active{
+    border-color: transparent !important;
+    background: #9757D7;
+    a {
+      color: #FFFFFF !important;
+    }
+    
+  }
+}
+.sentre-pagination-next {
+  .sentre-pagination-item-link {
+    border-radius: 90px !important;
+  }
+  
+}

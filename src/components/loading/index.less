@@ -1,0 +1,17 @@
+@import 'static/styles/common/vars.less';
+
+.loading-screen {
+  padding: 12px;
+  position: fixed;
+  left: 0;
+  height: calc(100vh);
+  width: 100vw;
+  backdrop-filter: blur(16px);
+  z-index: 9;
+  #light & {
+    background-color: color(~`('@{NEUTRAL05}aa') `);
+  }
+  #dark & {
+    background-color: color(~`('@{NEUTRAL100}aa') `);
+  }
+}

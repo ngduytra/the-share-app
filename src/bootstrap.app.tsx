@@ -5,6 +5,8 @@ import View from 'view'
 
 import model from 'model'
 import configs from 'configs'
+import 'static/styles/light.less'
+import 'static/styles/dark.less'
 
 const {
   manifest: { appId },

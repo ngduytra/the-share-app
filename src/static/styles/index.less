@@ -1,0 +1,72 @@
+@import './common/card.less';
+@screen-phone: 767px;
+
+.percent-btn {
+  border-radius: 8px !important;
+  height: 8px !important;
+  width: 32px !important;
+}
+
+.caption {
+  font-size: 12px;
+}
+
+.balansol-input-affix-wrapper-focused {
+  box-shadow: none !important;
+}
+
+.chart-card {
+  height: 396px;
+  box-shadow: unset;
+  .chart-title {
+    height: 38px;
+  }
+  .doughnut-container {
+    .balansol-space-item {
+      width: 276px;
+      height: 276px;
+      position: relative;
+    }
+  }
+
+  .barchart-container {
+    margin: auto;
+    position: relative;
+    .echarts-for-react {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: @screen-phone) {
+    height: 380px;
+  }
+}
+
+.slippage {
+  padding-top: 0px;
+  .balansol-popover-inner-content {
+    padding: 0px;
+  }
+}
+
+.search-pools {
+  background: transparent !important;
+  box-shadow: none !important;
+  .balansol-select {
+    .balansol-select-selector {
+      border-radius: 24px !important;
+    }
+  }
+}
+
+.disabled-pool {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.pool-card-detail {
+  cursor: pointer;
+  &:hover {
+    border: 1px solid #63E0B3;
+  }
+}

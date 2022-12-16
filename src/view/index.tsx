@@ -1,38 +1,56 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useWalletAddress } from '@sentre/senhub'
+import { useAppRoute, useWalletAddress } from '@sentre/senhub'
 
 import { Row, Col, Typography, Button, Space } from 'antd'
-import IonIcon from '@sentre/antd-ionicon'
 
 import { AppDispatch, AppState } from 'model'
-import { increaseCounter } from 'model/main.controller'
+
+import Plan from './plan'
+import Request from './request'
+import { fetchPlans } from 'model/plan.controller'
+import Header from './header'
+
+import './index.less'
+import { fetchRequests } from 'model/request.controller'
+import { AppWatcher } from 'components/watcher'
 
 const View = () => {
-  const walletAddress = useWalletAddress()
-  const dispatch = useDispatch<AppDispatch>()
-  const counter = useSelector((state: AppState) => state.main.counter)
+  // const walletAddress = useWalletAddress()
+  // const dispatch = useDispatch<AppDispatch>()
 
-  const increase = useCallback(() => dispatch(increaseCounter()), [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchPlans())
+  // }, [dispatch])
+
+  // useEffect(() => {
+  //   dispatch(fetchRequests())
+  // }, [dispatch])
 
   return (
-    <Row gutter={[24, 24]} align="middle">
-      <Col span={24}>
-        <Space align="center">
-          <IonIcon name="newspaper-outline" />
-          <Typography.Title level={4}>App View</Typography.Title>
-        </Space>
-      </Col>
-      <Col span={24}>
-        <Typography.Text>Address: {walletAddress}</Typography.Text>
-      </Col>
-      <Col>
-        <Typography.Text>Counter: {counter}</Typography.Text>
-      </Col>
-      <Col>
-        <Button onClick={increase}>Increase</Button>
-      </Col>
-    </Row>
+    <AppWatcher>
+      <Row align="middle" style={{ margin: -12 }}>
+        <Col span={24}>
+          <Header />
+        </Col>
+        <Col span={24}>
+          <Row
+            gutter={[32, 32]}
+            style={{
+              padding: '28px 150px',
+              background: '#fafafa',
+            }}
+          >
+            <Col span={24} style={{ borderBottom: '2px dashed #B1B5C4' }}>
+              <Plan />
+            </Col>
+            <Col span={24}>
+              <Request />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </AppWatcher>
   )
 }
 
