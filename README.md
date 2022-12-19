@@ -1,5 +1,3 @@
-# SenHub
+## Link to Smart Contract of The Share
 
-## Document
-
-[https://docs.sentre.io/](https://docs.sentre.io/)
+[https://github.com/ngduytra/the-share-prog](https://github.com/ngduytra/the-share-prog)
